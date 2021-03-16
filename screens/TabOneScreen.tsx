@@ -12,8 +12,10 @@ export default function TabOneScreen() {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [uri, setURI] = useState('');
-  const [promotion, setPromotion] = useState('');
+  //const [promotion, setPromotion] = useState('');
   const [promoList, setPromoList] = useState([''])
+
+  var promotion = "";
 
   const config = {
     headers: {
@@ -21,30 +23,27 @@ export default function TabOneScreen() {
     }
   }
 
-  function getPromo(dataURI){
-    axios.get(dataURI, config)
-    .then(res => {
-      const data = JSON.stringify(res.data);
-      setPromotion(data)
-      savePromo()
-    })
-  }
+  const getPromo = async(dataURI) => {
+    try{
+       await axios.get(dataURI, config)
+      .then(res => {
+        const data = JSON.stringify(res.data);
+        promotion = data
+        savePromo()
+      })
+    } catch (error){
+      alert(error)
+    }
+  } 
 
   const deleteLocal = async()=>{
     try{
       await AsyncStorage.removeItem('@promoList')
+      promotion = "";
     } catch(error){
       alert(error)
     }
   }
-/*
-  const savePromo = async () => {
-    try {
-      await AsyncStorage.setItem('@promoList', promotion )
-    } catch (e) {
-      alert(e)
-    }
-  }*/
 
   const savePromo = async () => {
     try {
@@ -53,13 +52,13 @@ export default function TabOneScreen() {
         if(res !== null){
         //var response = JSON.parse(res)
         //var newPromo = JSON.parse(promotion)
-        if(res !== promotion){
-        var newList = res+promotion
-        console.log(newList)
-        AsyncStorage.setItem('@promoList',  newList )
+          if(res !== promotion){
+            var newList = res+'|'+promotion
+            AsyncStorage.setItem('@promoList',  newList )
+          }
+        } else {
+          AsyncStorage.setItem('@promoList', promotion)
         }
-        }
-        AsyncStorage.setItem('@promoList', promotion)
       }) 
     } catch (e) {
       alert(e)
@@ -89,10 +88,10 @@ export default function TabOneScreen() {
     <View style={styles.container}>
       <ImageBackground source={backgroundImg} style={styles.backgroundImg}></ImageBackground>
       <View style={styles.scan}>
-              <BarCodeScanner
+        <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
-      />
+        />
       <Button title="press" onPress={()=>alert(promotion)}></Button>
       <Button title="clean local" onPress={deleteLocal}></Button>
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
