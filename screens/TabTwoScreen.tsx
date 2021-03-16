@@ -44,7 +44,7 @@ export default function App() {
       const value = await AsyncStorage.getItem('@promoList');
       if (value !== null) {
         // We have data!!
-        console.log(value);
+        //console.log(value);
         alert(value);
       }
     } catch (error) {
@@ -60,7 +60,7 @@ export default function App() {
           'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
         );
         let responseJson = await response.json();
-        console.log(responseJson);
+        //console.log(responseJson);
         setListData(responseJson.result.concat(initialData));
         setRefreshing(false)
       } catch (error) {

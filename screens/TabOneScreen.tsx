@@ -30,9 +30,37 @@ export default function TabOneScreen() {
     })
   }
 
+  const deleteLocal = async()=>{
+    try{
+      await AsyncStorage.removeItem('@promoList')
+    } catch(error){
+      alert(error)
+    }
+  }
+/*
   const savePromo = async () => {
     try {
       await AsyncStorage.setItem('@promoList', promotion )
+    } catch (e) {
+      alert(e)
+    }
+  }*/
+
+  const savePromo = async () => {
+    try {
+       await AsyncStorage.getItem('@promoList')
+      .then(res => {
+        if(res !== null){
+        //var response = JSON.parse(res)
+        //var newPromo = JSON.parse(promotion)
+        if(res !== promotion){
+        var newList = res+promotion
+        console.log(newList)
+        AsyncStorage.setItem('@promoList',  newList )
+        }
+        }
+        AsyncStorage.setItem('@promoList', promotion)
+      }) 
     } catch (e) {
       alert(e)
     }
@@ -48,7 +76,6 @@ export default function TabOneScreen() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     getPromo(data);
-    alert(`Bar code with type ${type} and data ${promotion} has been scanned!`);
   };
 
   if (hasPermission === null) {
@@ -67,6 +94,7 @@ export default function TabOneScreen() {
         style={StyleSheet.absoluteFillObject}
       />
       <Button title="press" onPress={()=>alert(promotion)}></Button>
+      <Button title="clean local" onPress={deleteLocal}></Button>
       {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
       </View>
 
