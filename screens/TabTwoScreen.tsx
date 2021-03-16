@@ -9,42 +9,25 @@ const backgroundImg = require("../assets/images/background.jpg");
 
 export default function App() {
 
-  const initialData = [
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-      title: "Susan Bert",
-      image: "1"
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Neil Arms",
-      image: "2"
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Carla Neice",
-      image: "3"
-    },
-    {
-      id: "bd7acbea-c1b1-46c2-aed5-3ad53cbb28ba",
-      title: "Janice Hanner",
-      image: "4"
-    },
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fcd91aa97f63",
-      title: "James Sullivan",
-      image: "5"
-    }
-  ];
+  var initialData = [];
+
   const [refreshing, setRefreshing] = React.useState(false);
   const [listData, setListData] = React.useState(initialData);
 
   const _retrieveData = async () => {
     try {
+      deleteLocal
       const value = await AsyncStorage.getItem('@promoList');
       if (value !== null) {
-        // We have data!!
-        //console.log(value);
+        var resString = value.split("|");
+          resString.forEach(element => {
+            var item = JSON.parse(element)
+            console.log(item)
+            initialData.push(item)
+            setListData(initialData)
+          });{
+
+          }
         alert(value);
       }
     } catch (error) {
@@ -52,6 +35,16 @@ export default function App() {
     }
   };
 
+  const deleteLocal = async()=>{
+    try{
+      await AsyncStorage.removeItem('@promoList')
+      initialData=[]
+      setListData(initialData)
+    } catch(error){
+      alert(error)
+    }
+  }
+/*
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
 
@@ -66,12 +59,12 @@ export default function App() {
       } catch (error) {
         console.error(error);
       }
-  }, [refreshing]);
+  }, [refreshing]);*/
 
-  function Item({ title }) {
+  function Item({ nom,  qr_code}) {
     return (
       <View style={styles.item}>
-        <TouchableOpacity style={styles.buttonShowCode} onPress={()=>alert(title)}><Text style={styles.itemText}>{title}</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.buttonShowCode} onPress={()=>alert(qr_code)}><Text style={styles.itemText}>{nom}</Text></TouchableOpacity>
       </View>
     );
   }
@@ -80,10 +73,11 @@ export default function App() {
       <ImageBackground source={backgroundImg} style={styles.backgroundImg}></ImageBackground>
       <View style={styles.backgroundCard}></View>
       <Button title="press" onPress={_retrieveData}></Button>
+      <Button title="delete data" onPress={deleteLocal}></Button>
           <FlatList
           style={{position:"absolute", paddingTop:0, }}
           data={listData}
-          renderItem={({ item }) => <Item title={item.title} />}
+          renderItem={({ item }) => <Item nom={item.nom} qr_code={item.qr_code} />}
           keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={_retrieveData} />
