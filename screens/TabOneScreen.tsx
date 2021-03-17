@@ -7,7 +7,7 @@ import axios from 'axios';
 const backgroundImg = require("../assets/images/background2.png");
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height
-const scanAgain = require("../assets/images/scanAgain.png")
+const scanAgain = require("../assets/images/scan-button.png")
 
 export default function TabOneScreen() {
   const [hasPermission, setHasPermission] = useState(false);
@@ -134,10 +134,10 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   scanAgain:{
-    width:200,
-    height:200,
+    width:285,
+    height:75,
     alignSelf:'center',
     alignItems:'center',
-    marginTop:screenHeight/4.8
+    marginTop:screenHeight/4
   }
 });
