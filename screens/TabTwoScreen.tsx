@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   RefreshControl, StyleSheet, Text, SafeAreaView, Image, View, FlatList, Dimensions, ToastAndroid, TouchableOpacity, ImageBackground, Button
 } from 'react-native';
@@ -46,11 +46,22 @@ export default function App() {
       alert(error)
     }
   }
+/*
+  const getExpirationDate = async()=>{
+    try{
+      var now = await new Date();
+      var nowdate = now.getDate().toString()
+      return nowdate;
+    } catch(error){
+      alert(error)
+    }
+  }*/
 
-  function Item({ nom,  qr_code}) {
+  function Item({ code, nom, montant, expireAt}) {
     return (
       <View style={styles.item}>
-        <TouchableOpacity style={styles.buttonShowCode} onPress={()=>alert(qr_code)}><Text style={styles.itemText}>{nom}</Text></TouchableOpacity>
+        <Text style={styles.itemText}>{nom}</Text>
+        <Text style={styles.expDate}>{expireAt}</Text>
       </View>
     );
   }
@@ -62,7 +73,7 @@ export default function App() {
           <FlatList
           style={{position:"absolute", paddingTop:-20, }}
           data={listData}
-          renderItem={({ item }) => <Item nom={item.nom} qr_code={item.qr_code} />}
+          renderItem={({ item }) => <Item code={item.code} nom={item.nom} montant={item.montant} expireAt={item.expireAt} />}
           keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={_retrieveData} />
@@ -121,6 +132,9 @@ const styles = StyleSheet.create({
     width: 60, height: 60, borderWidth: 1, borderColor: '#aaa'
   },
   itemText: {
+    padding:5, fontSize: 18, backgroundColor: '#FFF', borderWidth:5
+  },
+  expDate:{
     padding:5, fontSize: 18, backgroundColor: '#FFF', borderWidth:5
   }
 });

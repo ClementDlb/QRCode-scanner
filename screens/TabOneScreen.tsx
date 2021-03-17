@@ -52,7 +52,7 @@ export default function TabOneScreen() {
         if(res !== null){
         //var response = JSON.parse(res)
         //var newPromo = JSON.parse(promotion)
-          if(res !== promotion){
+          if(!res.includes(promotion)){
             var newList = res+'|'+promotion
             AsyncStorage.setItem('@promoList',  newList )
           }
