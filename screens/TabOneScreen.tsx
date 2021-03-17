@@ -28,6 +28,7 @@ export default function TabOneScreen() {
     try{
        await axios.get(dataURI, config)
       .then(res => {
+        console.log(res)
         const data = JSON.stringify(res.data);
         promotion = data
         savePromo()
@@ -54,10 +55,14 @@ export default function TabOneScreen() {
         //var response = JSON.parse(res)
         //var newPromo = JSON.parse(promotion)
           if(!res.includes(promotion)){
+            alert('Code scanné ! :)');
             var newList = res+'|'+promotion
             AsyncStorage.setItem('@promoList',  newList )
+          } else {
+            alert('Code déjà scanné !')
           }
         } else {
+          alert('Code scanné ! :)');
           AsyncStorage.setItem('@promoList', promotion)
         }
       }) 
@@ -93,7 +98,6 @@ export default function TabOneScreen() {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
         />
-      <Button title="clean local" onPress={deleteLocal}></Button>
       {scanned && <TouchableOpacity style={styles.scanAgainBtn} onPress={() => setScanned(false)}><Image style={styles.scanAgain} source={scanAgain}></Image></TouchableOpacity> }
       </View>
     </View>
@@ -138,6 +142,6 @@ const styles = StyleSheet.create({
     height:75,
     alignSelf:'center',
     alignItems:'center',
-    marginTop:screenHeight/4
+    marginTop:screenHeight/3.2
   }
 });

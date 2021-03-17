@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   RefreshControl, StyleSheet, Text, SafeAreaView, Image, View, FlatList, Dimensions, ToastAndroid, TouchableOpacity, ImageBackground, Button
 } from 'react-native';
@@ -11,10 +11,19 @@ const seeImg = require("../assets/images/see.png")
 
 export default function App() {
 
-  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const [listData, setListData] = React.useState(initialData);
   const [isListEmpty, setListEmpty] = React.useState(true);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (isFocused) {
+      _retrieveData();
+    } else {
+      console.log(isFocused);
+    }
+  }, [isFocused]);
 
   var initialData = [];
 
@@ -27,7 +36,6 @@ export default function App() {
         var resString = value.split("|");
           resString.forEach(element => {
             var item = JSON.parse(element)
-            console.log(item)
             initialData.push(item)
             setListData(initialData)
           });
@@ -47,16 +55,6 @@ export default function App() {
       alert(error)
     }
   }
-/*
-  const getExpirationDate = async()=>{
-    try{
-      var now = await new Date();
-      var nowdate = now.getDate().toString()
-      return nowdate;
-    } catch(error){
-      alert(error)
-    }
-  }*/
 
   function Item({ code, nom, montant, expireAt}) {
     return (
@@ -72,7 +70,6 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={backgroundImg} style={styles.backgroundImg}></ImageBackground>
-      <Button title="press" onPress={_retrieveData}></Button>
       <Button title="delete data" onPress={deleteLocal}></Button>
           <FlatList
           style={{position:"absolute", paddingTop:-20, paddingLeft:40 }}
