@@ -6,7 +6,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 
 const widthConst = Dimensions.get('screen').width;
-const backgroundImg = require("../assets/images/background.jpg");
+const backgroundImg = require("../assets/images/background2.png");
+const seeImg = require("../assets/images/see.png")
 
 export default function App() {
 
@@ -61,7 +62,10 @@ export default function App() {
     return (
       <View style={styles.item}>
         <Text style={styles.itemText}>{nom}</Text>
+        <Text style={styles.amount}>{montant}%</Text>
         <Text style={styles.expDate}>{expireAt}</Text>
+        <TouchableOpacity style={styles.seeButton} onPress={()=>alert(code)}><Image style={styles.seeImg} source={seeImg}></Image></TouchableOpacity>
+        <Image style={styles.couponImg} source={require('../assets/images/coupon.png')}></Image>
       </View>
     );
   }
@@ -71,7 +75,7 @@ export default function App() {
       <Button title="press" onPress={_retrieveData}></Button>
       <Button title="delete data" onPress={deleteLocal}></Button>
           <FlatList
-          style={{position:"absolute", paddingTop:-20, }}
+          style={{position:"absolute", paddingTop:-20, paddingLeft:40 }}
           data={listData}
           renderItem={({ item }) => <Item code={item.code} nom={item.nom} montant={item.montant} expireAt={item.expireAt} />}
           keyExtractor={item => item.id}
@@ -79,6 +83,8 @@ export default function App() {
             <RefreshControl refreshing={refreshing} onRefresh={_retrieveData} />
           }
           contentContainerStyle={styles.list}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         />
         <Image style={isListEmpty? styles.imgListEmpty : styles.imgDisabled} source={require('../assets/images/nocode.png')}></Image>
     </SafeAreaView>
@@ -126,15 +132,29 @@ const styles = StyleSheet.create({
     width: 100, height: 40
   },
   item: {
-    flexDirection: 'row', alignItems: 'flex-start', paddingHorizontal: 20, paddingTop: 20
+    flexDirection: 'row', alignItems: 'flex-start', paddingHorizontal: 0, paddingTop: 100, alignContent:'center'
   },
   thumbnail: {
     width: 60, height: 60, borderWidth: 1, borderColor: '#aaa'
   },
   itemText: {
-    padding:5, fontSize: 18, backgroundColor: '#FFF', borderWidth:5
+    fontSize: 28, position:'absolute', zIndex:1, fontFamily:'Cartoon', color:"#FFF", paddingLeft:60, paddingTop:10
   },
   expDate:{
-    padding:5, fontSize: 18, backgroundColor: '#FFF', borderWidth:5
+    padding:5, fontSize: 14, position:'absolute', zIndex:2, fontFamily:'space-mono', alignSelf:'center', paddingLeft:70, paddingTop:55
+  },
+  amount:{
+    padding:5, fontSize: 24, position:'absolute', zIndex:2, fontFamily:'Chill', alignSelf:'center', paddingLeft:75,paddingTop:15, color:"#FFF"
+  },
+  couponImg:{
+    position:'absolute',
+    width:380,
+    height:90,
+  },
+  seeButton:{
+    position:'absolute', zIndex:3, width:50, left:250, marginTop:52
+  },
+  seeImg:{
+    position:'absolute', width:40,height:23, alignItems:'center'
   }
 });

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, ImageBackground, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, Button, ImageBackground, Dimensions, TouchableOpacity, Image} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 
-const backgroundImg = require("../assets/images/background.jpg");
+const backgroundImg = require("../assets/images/background2.png");
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height
+const scanAgain = require("../assets/images/scanAgain.png")
 
 export default function TabOneScreen() {
   const [hasPermission, setHasPermission] = useState(false);
@@ -92,11 +93,9 @@ export default function TabOneScreen() {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
         />
-      <Button title="press" onPress={()=>alert(promotion)}></Button>
       <Button title="clean local" onPress={deleteLocal}></Button>
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      {scanned && <TouchableOpacity style={styles.scanAgainBtn} onPress={() => setScanned(false)}><Image style={styles.scanAgain} source={scanAgain}></Image></TouchableOpacity> }
       </View>
-
     </View>
   );
 }
@@ -129,4 +128,16 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  scanAgainBtn:{
+    justifyContent:'center',
+    alignSelf:'center',
+    alignItems:'center'
+  },
+  scanAgain:{
+    width:200,
+    height:200,
+    alignSelf:'center',
+    alignItems:'center',
+    marginTop:screenHeight/4.8
+  }
 });
