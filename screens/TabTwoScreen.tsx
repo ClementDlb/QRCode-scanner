@@ -3,35 +3,36 @@ import {
   RefreshControl, StyleSheet, Text, SafeAreaView, Image, View, FlatList, Dimensions, ToastAndroid, TouchableOpacity, ImageBackground, Button
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const widthConst = Dimensions.get('screen').width;
 const backgroundImg = require("../assets/images/background.jpg");
 
 export default function App() {
 
-  var initialData = [];
-
+  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = React.useState(false);
   const [listData, setListData] = React.useState(initialData);
+  const [isListEmpty, setListEmpty] = React.useState(true);
+
+  var initialData = [];
 
   const _retrieveData = async () => {
     try {
       deleteLocal
       const value = await AsyncStorage.getItem('@promoList');
       if (value !== null) {
+        setListEmpty(false);
         var resString = value.split("|");
           resString.forEach(element => {
             var item = JSON.parse(element)
             console.log(item)
             initialData.push(item)
             setListData(initialData)
-          });{
-
-          }
-        alert(value);
+          });
       }
     } catch (error) {
-      // Error retrieving data
+      alert(error)
     }
   };
 
@@ -39,27 +40,12 @@ export default function App() {
     try{
       await AsyncStorage.removeItem('@promoList')
       initialData=[]
+      setListEmpty(true)
       setListData(initialData)
     } catch(error){
       alert(error)
     }
   }
-/*
-  const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
-
-      try {
-        let response = await fetch(
-          'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
-        );
-        let responseJson = await response.json();
-        //console.log(responseJson);
-        setListData(responseJson.result.concat(initialData));
-        setRefreshing(false)
-      } catch (error) {
-        console.error(error);
-      }
-  }, [refreshing]);*/
 
   function Item({ nom,  qr_code}) {
     return (
@@ -71,11 +57,10 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={backgroundImg} style={styles.backgroundImg}></ImageBackground>
-      <View style={styles.backgroundCard}></View>
       <Button title="press" onPress={_retrieveData}></Button>
       <Button title="delete data" onPress={deleteLocal}></Button>
           <FlatList
-          style={{position:"absolute", paddingTop:0, }}
+          style={{position:"absolute", paddingTop:-20, }}
           data={listData}
           renderItem={({ item }) => <Item nom={item.nom} qr_code={item.qr_code} />}
           keyExtractor={item => item.id}
@@ -84,8 +69,7 @@ export default function App() {
           }
           contentContainerStyle={styles.list}
         />
-        <View style={styles.enappdWrapper}>
-        </View>
+        <Image style={isListEmpty? styles.imgListEmpty : styles.imgDisabled} source={require('../assets/images/nocode.png')}></Image>
     </SafeAreaView>
   );
 }
@@ -93,10 +77,21 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent'
+    flex: 1, alignItems: 'center', backgroundColor: 'transparent', justifyContent:"center"
   },
   scrollView: {
     flex: 1, backgroundColor: '#eeeeee',
+  },
+  imgListEmpty:{
+    position:"absolute",
+    width:350,
+    height:250,
+  },
+  imgDisabled:{
+    position:"relative",
+    width:0,
+    height:0
+
   },
   backgroundCard:{
     backgroundColor:"#FFF", position:"absolute", zIndex:1
