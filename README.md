@@ -14,7 +14,7 @@ Sur votre téléphone :
 
 - installer expo
 
-- scanner le qr_code du terminal grâce à la caméra
+- scanner le qr_code du terminal grâce à la caméra de votre téléphone
 
 Un fois dans l'app :
 
