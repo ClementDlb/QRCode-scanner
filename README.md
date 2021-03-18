@@ -6,6 +6,8 @@
 
 - ouvrir un temrinal à la racine du projet
 
+- npm (installation des librairies)
+
 - npm start (le terminal proposera d'installer expo si vous ne l'avez pas)
 
 - Le terminal délivre un qr_code
