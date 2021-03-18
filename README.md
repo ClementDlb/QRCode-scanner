@@ -14,6 +14,14 @@ Sur votre téléphone :
 
 - scanner le qr_code du terminal grâce à la caméra
 
+Un fois dans l'app :
+
+- Se rendre sur un générateur de qr_code
+
+- générer un qr_code avec cette url : https://mspr1.herokuapp.com/api/promotions/1  (l'id peut varier de 1 à 7)
+
+
+
 
 
 
