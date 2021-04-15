@@ -4,10 +4,10 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import PromoItem from '../components/PromoItem/PromoItem'
 
 const widthConst = Dimensions.get('screen').width;
 const backgroundImg = require("../assets/images/background2.png");
-const seeImg = require("../assets/images/see.png")
 
 export default function App() {
 
@@ -55,18 +55,7 @@ export default function App() {
       alert(error)
     }
   }
-
-  function Item({ code, nom, montant, expireAt}) {
-    return (
-      <View style={styles.item}>
-        <Text style={styles.itemText}>{nom}</Text>
-        <Text style={styles.amount}>{montant}%</Text>
-        <Text style={styles.expDate}>{expireAt}</Text>
-        <TouchableOpacity style={styles.seeButton} onPress={()=>alert(code)}><Image style={styles.seeImg} source={seeImg}></Image></TouchableOpacity>
-        <Image style={styles.couponImg} source={require('../assets/images/coupon.png')}></Image>
-      </View>
-    );
-  }
+  
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={backgroundImg} style={styles.backgroundImg}></ImageBackground>
@@ -74,7 +63,7 @@ export default function App() {
           <FlatList
           style={{position:"absolute", paddingTop:-20, paddingLeft:40 }}
           data={listData}
-          renderItem={({ item }) => <Item code={item.code} nom={item.nom} montant={item.montant} expireAt={item.expireAt} />}
+          renderItem={({ item }) => <PromoItem code={item.code} nom={item.nom} montant={item.montant} expireAt={item.expireAt} />}
           keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={_retrieveData} />
