@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, ImageBackground, Dimensions, TouchableOpacity, Image} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 
@@ -28,7 +28,6 @@ export default function TabOneScreen() {
     try{
        await axios.get(dataURI, config)
       .then(res => {
-        console.log(res)
         const data = JSON.stringify(res.data);
         promotion = data
         savePromo()
@@ -86,19 +85,19 @@ export default function TabOneScreen() {
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
   }
-  if (hasPermission === false) {
+  if (!hasPermission) {
     return <Text>No access to camera</Text>;
   }
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={backgroundImg} style={styles.backgroundImg}></ImageBackground>
+      <ImageBackground source={backgroundImg} style={styles.backgroundImg}/>
       <View style={styles.scan}>
         <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
         />
-      {scanned && <TouchableOpacity style={styles.scanAgainBtn} onPress={() => setScanned(false)}><Image style={styles.scanAgain} source={scanAgain}></Image></TouchableOpacity> }
+      {scanned && <TouchableOpacity style={styles.scanAgainBtn} onPress={() => setScanned(false)}><Image style={styles.scanAgain} source={scanAgain} /></TouchableOpacity> }
       </View>
     </View>
   );
