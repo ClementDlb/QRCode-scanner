@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, ImageBackground, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
@@ -12,9 +12,6 @@ const scanAgain = require("../assets/images/scan-button.png")
 export default function TabOneScreen() {
   const [hasPermission, setHasPermission] = useState(false);
   const [scanned, setScanned] = useState(false);
-  const [uri, setURI] = useState('');
-  //const [promotion, setPromotion] = useState('');
-  const [promoList, setPromoList] = useState([''])
 
   var promotion = "";
 
@@ -24,6 +21,7 @@ export default function TabOneScreen() {
     }
   }
 
+  //Récupère la promotion depuis l'API
   const getPromo = async (dataURI) => {
     try {
       await axios.get(dataURI, config)
@@ -37,13 +35,12 @@ export default function TabOneScreen() {
     }
   }
 
+  //Enregistre la promotion dans le stockage local du téléphone et alerte l'utilisateur si le code a déjà été scanné
   const savePromo = async () => {
     try {
       await AsyncStorage.getItem('@promoList')
         .then(res => {
           if (res !== null) {
-            //var response = JSON.parse(res)
-            //var newPromo = JSON.parse(promotion)
             if (!res.includes(promotion)) {
               alert('Code scanné ! :)');
               var newList = res + '|' + promotion
@@ -61,6 +58,7 @@ export default function TabOneScreen() {
     }
   }
 
+  //Demande l'autorisation pour l'utilisation de l'appareil photo
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -68,16 +66,18 @@ export default function TabOneScreen() {
     })();
   }, []);
 
+  //Fonction appelée quand un code est scanné et envoi de la data à l'API
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     getPromo(data);
   };
 
+  //Vérifie que le scanner ait accès à la caméra
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return <Text>Authorisation d'accès à la caméra</Text>;
   }
   if (!hasPermission) {
-    return <Text>No access to camera</Text>;
+    return <Text>Pas d'accès à la caméra</Text>;
   }
 
   return (

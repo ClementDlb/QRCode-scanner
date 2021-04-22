@@ -1,18 +1,5 @@
-import React, { useEffect } from 'react';
-import {
-    RefreshControl,
-    StyleSheet,
-    Text,
-    SafeAreaView,
-    Image,
-    View,
-    FlatList,
-    Dimensions,
-    ToastAndroid,
-    TouchableOpacity,
-    ImageBackground,
-    Button
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { RefreshControl, StyleSheet, SafeAreaView, Image, FlatList, Dimensions, ImageBackground, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import PromoItem from '../components/PromoItem/PromoItem'
@@ -20,24 +7,24 @@ import PromoItem from '../components/PromoItem/PromoItem'
 const widthConst = Dimensions.get('screen').width;
 const backgroundImg = require("../assets/images/background2.png");
 
-
-
 export default function App() {
 
     let initialData: Object[] = [];
 
-    const [refreshing, setRefreshing] = React.useState(false);
-    const [listData, setListData] = React.useState(initialData);
-    const [isListEmpty, setListEmpty] = React.useState(true);
+    const [refreshing, setRefreshing] = useState(false);
+    const [listData, setListData] = useState(initialData);
+    const [isListEmpty, setListEmpty] = useState(true);
 
     const isFocused = useIsFocused();
 
+    //Appelée quand l'utilisateur va sur l'écran : Appelle la fonction _retrieveData
     useEffect(() => {
         if (isFocused) {
             _retrieveData();
         }
     }, [isFocused]);
 
+    //récupère les promotions stockée localement sur le téléphone
     const _retrieveData = async () => {
         try {
             await deleteLocal;
@@ -56,6 +43,7 @@ export default function App() {
         }
     };
 
+    //Permets la suppression des codes promotions en mémoire
     const deleteLocal = async () => {
         try {
             await AsyncStorage.removeItem('@promoList')
@@ -74,6 +62,7 @@ export default function App() {
             <FlatList
                 style={{ position: "absolute", paddingTop: -20, paddingLeft: 40 }}
                 data={listData}
+                //Permet le rendu d'une promotion en appelant un composant "PromoItem" pour chaque promotion de la Listdata
                 renderItem={({ item }) => <PromoItem code={item.code} nom={item.nom} montant={item.montant}
                     expireAt={item.expireAt} />}
                 keyExtractor={item => item.id}
@@ -107,7 +96,6 @@ const styles = StyleSheet.create({
         position: "relative",
         width: 0,
         height: 0
-
     },
     backgroundCard: {
         backgroundColor: "#FFF", position: "absolute", zIndex: 1
