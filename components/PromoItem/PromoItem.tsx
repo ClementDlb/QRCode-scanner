@@ -1,15 +1,15 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native'
 
 const seeImg = require("../../assets/images/see.png")
 
 function PromoItem(props) {
     return (
       <View style={styles.item}>
-        <Text style={styles.itemText}>{props.nom}</Text>
-        <Text style={styles.amount}>{props.montant}%</Text>
-        <Text style={styles.expDate}>{props.expireAt}</Text>
-        <TouchableOpacity style={styles.seeButton} onPress={()=>alert(props.code)}><Image style={styles.seeImg} source={seeImg}></Image></TouchableOpacity>
+        <Text style={styles.itemText} testID={'Nomtext'}>{props.nom}</Text>
+        <Text style={styles.amount} testID={'Montanttext'}>{props.montant}%</Text>
+        <Text style={styles.expDate} testID={'ExpireAttext'}>{props.expireAt}</Text>
+        <TouchableOpacity style={styles.seeButton} testID={'AlertCodeButton'} onPress={()=>Alert.alert(props.code)}><Image style={styles.seeImg} source={seeImg}></Image></TouchableOpacity>
         <Image style={styles.couponImg} source={require('../../assets/images/coupon.png')}></Image>
       </View>
     );

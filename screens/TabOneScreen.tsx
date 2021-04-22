@@ -37,15 +37,6 @@ export default function TabOneScreen() {
     }
   } 
 
-  const deleteLocal = async()=>{
-    try{
-      await AsyncStorage.removeItem('@promoList')
-      promotion = "";
-    } catch(error){
-      alert(error)
-    }
-  }
-
   const savePromo = async () => {
     try {
        await AsyncStorage.getItem('@promoList')
