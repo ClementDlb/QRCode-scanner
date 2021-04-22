@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, ImageBackground, Dimensions, TouchableOpacity, Image} from 'react-native';
+import { Text, View, StyleSheet, Button, ImageBackground, Dimensions, TouchableOpacity, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
@@ -24,38 +24,38 @@ export default function TabOneScreen() {
     }
   }
 
-  const getPromo = async(dataURI) => {
-    try{
-       await axios.get(dataURI, config)
-      .then(res => {
-        const data = JSON.stringify(res.data);
-        promotion = data
-        savePromo()
-      })
-    } catch (error){
+  const getPromo = async (dataURI) => {
+    try {
+      await axios.get(dataURI, config)
+        .then(res => {
+          const data = JSON.stringify(res.data);
+          promotion = data
+          savePromo()
+        })
+    } catch (error) {
       alert(error)
     }
-  } 
+  }
 
   const savePromo = async () => {
     try {
-       await AsyncStorage.getItem('@promoList')
-      .then(res => {
-        if(res !== null){
-        //var response = JSON.parse(res)
-        //var newPromo = JSON.parse(promotion)
-          if(!res.includes(promotion)){
-            alert('Code scanné ! :)');
-            var newList = res+'|'+promotion
-            AsyncStorage.setItem('@promoList',  newList )
+      await AsyncStorage.getItem('@promoList')
+        .then(res => {
+          if (res !== null) {
+            //var response = JSON.parse(res)
+            //var newPromo = JSON.parse(promotion)
+            if (!res.includes(promotion)) {
+              alert('Code scanné ! :)');
+              var newList = res + '|' + promotion
+              AsyncStorage.setItem('@promoList', newList)
+            } else {
+              alert('Code déjà scanné !')
+            }
           } else {
-            alert('Code déjà scanné !')
+            alert('Code scanné ! :)');
+            AsyncStorage.setItem('@promoList', promotion)
           }
-        } else {
-          alert('Code scanné ! :)');
-          AsyncStorage.setItem('@promoList', promotion)
-        }
-      }) 
+        })
     } catch (e) {
       alert(e)
     }
@@ -82,13 +82,13 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={backgroundImg} style={styles.backgroundImg}/>
+      <ImageBackground source={backgroundImg} style={styles.backgroundImg} />
       <View style={styles.scan}>
         <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject}
         />
-      {scanned && <TouchableOpacity style={styles.scanAgainBtn} onPress={() => setScanned(false)}><Image style={styles.scanAgain} source={scanAgain} /></TouchableOpacity> }
+        {scanned && <TouchableOpacity style={styles.scanAgainBtn} onPress={() => setScanned(false)}><Image style={styles.scanAgain} source={scanAgain} /></TouchableOpacity>}
       </View>
     </View>
   );
@@ -100,18 +100,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  scan:{
-    flex:1,
-    margin:50,
-    position:"absolute",
-    width:screenWidth*0.8,
-    height: screenHeight*0.8,
-    borderWidth:10
+  scan: {
+    flex: 1,
+    margin: 50,
+    position: "absolute",
+    width: screenWidth * 0.8,
+    height: screenHeight * 0.8,
+    borderWidth: 10
   },
-  backgroundImg:{
+  backgroundImg: {
     flex: 1,
     resizeMode: "cover",
-    width:screenWidth,
+    width: screenWidth,
   },
   title: {
     fontSize: 20,
@@ -122,16 +122,16 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  scanAgainBtn:{
-    justifyContent:'center',
-    alignSelf:'center',
-    alignItems:'center'
+  scanAgainBtn: {
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center'
   },
-  scanAgain:{
-    width:285,
-    height:75,
-    alignSelf:'center',
-    alignItems:'center',
-    marginTop:screenHeight/3.2
+  scanAgain: {
+    width: 285,
+    height: 75,
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: screenHeight / 3.2
   }
 });

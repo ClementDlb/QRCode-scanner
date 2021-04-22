@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
     RefreshControl,
     StyleSheet,
@@ -14,7 +14,7 @@ import {
     Button
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import PromoItem from '../components/PromoItem/PromoItem'
 
 const widthConst = Dimensions.get('screen').width;
@@ -69,23 +69,23 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ImageBackground source={backgroundImg} style={styles.backgroundImg}/>
-            <Button title="delete data" onPress={deleteLocal}/>
+            <ImageBackground source={backgroundImg} style={styles.backgroundImg} />
+            <Button title="delete data" onPress={deleteLocal} />
             <FlatList
-                style={{position: "absolute", paddingTop: -20, paddingLeft: 40}}
+                style={{ position: "absolute", paddingTop: -20, paddingLeft: 40 }}
                 data={listData}
-                renderItem={({item}) => <PromoItem code={item.code} nom={item.nom} montant={item.montant}
-                                                   expireAt={item.expireAt}/>}
+                renderItem={({ item }) => <PromoItem code={item.code} nom={item.nom} montant={item.montant}
+                    expireAt={item.expireAt} />}
                 keyExtractor={item => item.id}
                 refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={_retrieveData}/>
+                    <RefreshControl refreshing={refreshing} onRefresh={_retrieveData} />
                 }
                 contentContainerStyle={styles.list}
                 showsHorizontalScrollIndicator={false}
                 showsVerticalScrollIndicator={false}
             />
             <Image style={isListEmpty ? styles.imgListEmpty : styles.imgDisabled}
-                   source={require('../assets/images/nocode.png')}/>
+                source={require('../assets/images/nocode.png')} />
         </SafeAreaView>
     );
 }
