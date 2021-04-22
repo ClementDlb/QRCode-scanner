@@ -9,7 +9,9 @@ function PromoItem(props) {
         <Text style={styles.itemText} testID={'Nomtext'}>{props.nom}</Text>
         <Text style={styles.amount} testID={'Montanttext'}>{props.montant}%</Text>
         <Text style={styles.expDate} testID={'ExpireAttext'}>{props.expireAt}</Text>
-        <TouchableOpacity style={styles.seeButton} testID={'AlertCodeButton'} onPress={()=>Alert.alert(props.code)}><Image style={styles.seeImg} source={seeImg}></Image></TouchableOpacity>
+        <TouchableOpacity style={styles.seeButton} testID={'AlertCodeButton'} 
+          onPress={()=>Alert.alert(props.code)}><Image style={styles.seeImg} source={seeImg}></Image>
+        </TouchableOpacity>
         <Image style={styles.couponImg} source={require('../../assets/images/coupon.png')}></Image>
       </View>
     );

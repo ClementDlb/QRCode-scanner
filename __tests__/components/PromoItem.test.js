@@ -1,5 +1,4 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { Alert } from 'react-native';
 import PromoItem from '../../components/PromoItem/PromoItem'
 import { render, cleanup, fireEvent } from '@testing-library/react-native';
@@ -41,6 +40,5 @@ describe('<PromoItem />', () => {
 
         expect(Alert.alert).toHaveBeenCalledWith("HIVER33")
     });
-
 
 })
