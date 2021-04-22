@@ -20,6 +20,8 @@ import PromoItem from '../components/PromoItem/PromoItem'
 const widthConst = Dimensions.get('screen').width;
 const backgroundImg = require("../assets/images/background2.png");
 
+
+
 export default function App() {
 
     let initialData: Object[] = [];
